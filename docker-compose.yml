@@ -1,0 +1,42 @@
+version: '3.9'
+
+services:
+  backend:
+    build: .
+    container_name: backend
+    command: sh -c "python3 manage.py makemigrations --noinput && \
+                    python3 manage.py migrate --noinput && \
+                    python3 manage.py runserver 0.0.0.0:8000"
+    environment:
+      - SECRET_KEY = change_me
+      - DEBUG = False
+    volumes:
+      - ./core:/usr/src/app
+      - static_volume:/usr/src/app/static
+      - media_volume:/usr/src/app/media
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  db:
+    container_name: postgresql
+    image: postgres:alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=Hrdip@2010
+      - POSTGRES_DB=test_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume: 

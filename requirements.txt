@@ -1,0 +1,22 @@
+django>4.2,<4.3
+djangorestframework
+django-cors-headers
+django-filter
+psycopg[binary,pool]
+
+# web socket
+channels
+channels-redis
+
+pillow
+celery
+redis
+
+# for build tree module
+django-treebeard
+
+# for asgi
+daphne
+
+# documentation
+drf-spectacular
