@@ -2,7 +2,7 @@ django>4.2,<4.3
 djangorestframework
 django-cors-headers
 django-filter
-psycopg[binary,pool]
+psycopg2-binary
 
 # web socket
 channels

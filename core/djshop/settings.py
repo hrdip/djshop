@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-n^^ix%vra^1_py9##e7j+_@c225sgrh72i-*52pe6cd$na65x-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'treebeard',
     'channels',
-    'djshop.apps.cataloge',
+    'catalog',
     
 ]
 
@@ -91,13 +91,13 @@ ASGI_APPLICATION = 'djshop.asgi.application'
 # }
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "test_db",
-        "USER": "admin",
-        "PASSWORD": "Hrdip@2010",
-        "HOST": "postgresql",
-        "PORT": "5432",
+    'default': {
+        'ENGINE':'django.db.backends.postgresql',
+        'NAME':'test_db',
+        'USER':'admin',
+        'PASSWORD':'Hrdip@2010',
+        'HOST':'postgresql',
+        'PORT':'5432',
     }
 }
 
@@ -142,3 +142,16 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+REST_FRAMEWORK= {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+# schema settings for documentation
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Djshop',
+    'DESCRIPTION': 'First try to build Shop api web application',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+}
