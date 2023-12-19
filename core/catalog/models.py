@@ -1,7 +1,8 @@
 from django.db import models
 from treebeard.mp_tree import MP_Node
-# Create your models here.
 
+
+# Create your models here.
 
 # tree or parent and child structures 
 class Category(MP_Node):
@@ -17,3 +18,4 @@ class Category(MP_Node):
     class Meta:
         verbose_name = "Category"
         verbose_name_plural = "Categories"
+
