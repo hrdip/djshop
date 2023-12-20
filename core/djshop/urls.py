@@ -30,3 +30,8 @@ urlpatterns = [
     path('redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
 
 ]
+
+# for customize logging admin
+admin.site.site_title = "DjShop"
+admin.site.index_title = "DjShop"
+admin.site.site_header = "DjShop"
