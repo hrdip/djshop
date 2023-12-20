@@ -45,11 +45,11 @@ class ProductClassAdmin(admin.ModelAdmin):
     list_display = ('title', 'slug', 'required_shipping', 'track_stock', 'has_attribute', 'attribute_count')
     list_filter = ('required_shipping', 'track_stock', AttributeCountFilter)
     # use ProductAttributeInLine class in this class like this:
-    inlines = (ProductAttributeInLine,)
+    inlines = [ProductAttributeInLine]
     # action for many filter fields
-    actions = ('enable_track_stock', )
+    actions = ['enable_track_stock']
     # base on title filed up slug
-    prepopulated_fields = {"slug": ("title",)}
+    prepopulated_fields = {'slug':('title',)}
 
     # each product has how many attribute
     def attribute_count(self,obj):

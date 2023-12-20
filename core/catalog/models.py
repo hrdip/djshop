@@ -110,3 +110,26 @@ class OptionGroupValue(models.Model):
     class Meta:
         verbose_name = "Option Group Value"
         verbose_name_plural = "Option Group Values"
+
+
+# each product have some variant (1.stand alone 2.parent and child product)
+# variant with self join in child
+class Product(models.Model):
+
+    # first we must know this product is stand alone or parent-child or child-parent
+    class ProductTypeChoice(models.TextChoices):
+        standalone = 'standalone'
+        parent = 'parent'
+        child = 'child'
+
+    structure = models.CharField(max_length=16, choises=ProductTypeChoice.choices, default=ProductTypeChoice.standalone, blank=True)
+    # for child product we need pointed parent
+    parent = models.ForeignKey("self", related_name="children", on_delete=models.CASCADE, null=True, blank=True)
+    title = models.CharField(max_length=128, null=True, blank=True)
+    # universal product code
+    upc = models.CharField(max_length=24, unique=True, null=True, blank=True)
+    
+
+    class Meta:
+        verbose_name = "Product"
+        verbose_name_plural = "Products"
