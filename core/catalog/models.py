@@ -1,5 +1,6 @@
 from django.db import models
 from treebeard.mp_tree import MP_Node
+from . libs.db.fields import UpercasesCharField
 
 
 # Create your models here.
@@ -127,8 +128,13 @@ class Product(models.Model):
     parent = models.ForeignKey("self", related_name="children", on_delete=models.CASCADE, null=True, blank=True)
     title = models.CharField(max_length=128, null=True, blank=True)
     # universal product code
-    upc = models.CharField(max_length=24, unique=True, null=True, blank=True)
-    
+    # use our custom field 
+    upc = UpercasesCharField(max_length=24, unique=True, null=True, blank=True)
+    is_public = models.BooleanField(default=True)
+    slug = models.SlugField(max_length=140, default='SOME STRING')
+    # use in SEO
+    meta_title = models.CharField(max_length=128, null=True, blank=True, blank=True)
+    meta_description = models.TextField(null=True, blank=True)
 
     class Meta:
         verbose_name = "Product"
