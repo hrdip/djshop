@@ -1,3 +1,4 @@
+from typing import Any
 from django.db import models
 from treebeard.mp_tree import MP_Node
 from . libs.db.fields import UpercasesCharField
@@ -146,6 +147,15 @@ class Product(models.Model):
     # with one have more Priority ( for this case we need middle class named ProductRecommendation )
     recommended_products = models.ManyToManyField('catalog.Product', through='ProductRecommendation', blank=True)
     
+    # image properties used for product ( easily access)
+    @property
+    def main_image(self):
+        if self.images.exists():
+            return self.image.first()
+        else:
+            return None
+
+
     class Meta:
         verbose_name = 'Product'
         verbose_name_plural = 'Products'
@@ -185,3 +195,30 @@ class ProductRecommendation(models.Model):
     class Meta:
         unique_together = ('primary', 'recommendation')
         ordering = ('primary', '-rank')
+
+
+# each product have a several pictures
+class ProductImage(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
+    # diffrent way to import IMAGE Class
+    image = models.ForeignKey('djshop_media.Image', on_delete=models.PROTECT)
+    
+    # main image (index=0) and album of that main image
+    display_order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ('display_order',)
+
+    # if we delete picture update display_order
+    # first fetch remaining images and sorting again and put main image as 0 index
+    def delete(self, *args, **kwargs):
+        super().delete(*args, **kwargs)
+
+        # fetch all images and index
+        for index, image in enumerate(self.product.images.all()):
+            # sorting again
+            image.display_order = index
+            image.save()
+
+    
+
