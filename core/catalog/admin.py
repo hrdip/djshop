@@ -1,4 +1,3 @@
-from typing import Any
 from django.contrib import admin
 from django.db.models.query import QuerySet
 from treebeard.admin import TreeAdmin
@@ -13,6 +12,14 @@ class ProductAttributeInLine(admin.TabularInline):
     model = ProductAttribute
     # no. of attributes you can add each production like size and color
     extra = 2
+
+
+class ProductRecommendationInline(admin.StackedInline):
+    model = ProductRecommendation
+    extra = 2
+    fk_name = 'primary'
+    # we must set a main Foreignkey
+    
 
 
 class CategoryAdmin(TreeAdmin):
@@ -60,6 +67,13 @@ class ProductClassAdmin(admin.ModelAdmin):
         queryset.update(track_stock=True)
 
 
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ('title', 'slug')
+    inlines = [ProductRecommendationInline]
+    prepopulated_fields = {'slug':('title',)}
+
+
 admin.site.register(Category,CategoryAdmin)
 admin.site.register(ProductClass,ProductClassAdmin)
+admin.site.register(Product,ProductAdmin)
 admin.site.register(Option)
