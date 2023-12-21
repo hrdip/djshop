@@ -137,9 +137,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
-
-# we set on docker-compose
+STATIC_ROOT = '/usr/src/app/static/'
+# we set this root on docker-compose
 MEDIA_ROOT = '/usr/src/app/media/'
+MEDIA_URL = 'media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
