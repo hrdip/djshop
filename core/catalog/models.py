@@ -123,7 +123,7 @@ class Product(models.Model):
         parent = 'parent'
         child = 'child'
 
-    structure = models.CharField(max_length=16, choises=ProductTypeChoice.choices, default=ProductTypeChoice.standalone, blank=True)
+    structure = models.CharField(max_length=16, choices=ProductTypeChoice.choices, default=ProductTypeChoice.standalone, blank=True)
     # for child product we need pointed parent
     parent = models.ForeignKey("self", related_name="children", on_delete=models.CASCADE, null=True, blank=True)
     title = models.CharField(max_length=128, null=True, blank=True)
@@ -133,9 +133,36 @@ class Product(models.Model):
     is_public = models.BooleanField(default=True)
     slug = models.SlugField(max_length=140, default='SOME STRING')
     # use in SEO
-    meta_title = models.CharField(max_length=128, null=True, blank=True, blank=True)
+    meta_title = models.CharField(max_length=128, null=True, blank=True)
     meta_description = models.TextField(null=True, blank=True)
+    # for get many to many relation 
+    product_class = models.ForeignKey(ProductClass, on_delete=models.PROTECT, null=True, blank=True, related_name='products')
+    
+    # for seve attribute values(middle class for handeling many relations to many relations)
+    # django automatically ProductAttributeValue Table
+    attribute = models.ManyToManyField(ProductAttribute, through='ProductAttributeValue')
+
 
     class Meta:
         verbose_name = "Product"
         verbose_name_plural = "Products"
+
+
+class ProductAttributeValue(models.Model):
+    product = models.ForeignKey(Product,on_delete=models.CASCADE)
+    attribute = models.ForeignKey(ProductAttribute, on_delete=models.CASCADE)
+    # we must save values of attributes
+    # for each of type choises
+    value_text = models.TextField(null=True, blank=True)
+    value_integer = models.IntegerField(null=True, blank=True)
+    value_float = models.FloatField(null=True, blank=True)
+    value_options = models.ForeignKey(OptionGroupValue, on_delete=models.PROTECT)
+    # use many to many options to get many of the options
+    value_multy_options = models.ManyToManyField(OptionGroupValue)
+    
+
+    # that to models most be unique
+    class Meta:
+       verbose_name = "Attribute Value"
+       verbose_name_plural = "Attribute Values"
+       unique_together = ("product", "attribute")
