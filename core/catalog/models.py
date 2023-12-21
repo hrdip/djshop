@@ -145,8 +145,7 @@ class Product(models.Model):
     # recommended system for gust relation product you like.
     # with one have more Priority ( for this case we need middle class named ProductRecommendation )
     recommended_products = models.ManyToManyField('catalog.Product', through='ProductRecommendation', blank=True)
-
-
+    
     class Meta:
         verbose_name = 'Product'
         verbose_name_plural = 'Products'
@@ -177,7 +176,7 @@ class ProductAttributeValue(models.Model):
 class ProductRecommendation(models.Model):
     primary = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='primary_recommendation')
     recommendation = models.ForeignKey(Product, on_delete=models.CASCADE)
-    # up to here the same as original class
+    # up to here the same as original class over write
 
     # customized class
     rank = models.PositiveBigIntegerField(default=0)
