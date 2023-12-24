@@ -26,14 +26,15 @@ class Image(models.Model):
 
     # for set automatically file_hash and file_size fields
     def save(self,  *args, **kwargs):
-        # before saving by super most be this to fields saved in
-        self.file_size = self.image.size
-        
-        hasher = hashlib.sha1()
-        for chunk in self.image.file.chunks():
-            hasher.update(chunk)
+        # chekc if we wnat only change a title of image no need do this section
+        if not self.image.file.closed:
+            # before saving by super most be this to fields saved in
+            self.file_size = self.image.size      
+            hasher = hashlib.sha1()
+            for chunk in self.image.file.chunks():
+                hasher.update(chunk)
 
-        self.file_hash = hasher.hexdigest()
+            self.file_hash = hasher.hexdigest()
 
         super().save(*args, **kwargs)
 
@@ -42,6 +43,6 @@ class Image(models.Model):
 # use signal with receiver
 @receiver(pre_save, sender=Image)
 def check_duplicate_hash(sender, instance, **kwargs):
-    existed = Image.objects.filter(file_hash=instance.file_hash).exclude(pk=instance.pk).exists()
+    existed = Image.objects.filter(file_hash=instance.file_hash).exclude(pk=instance.pk).exclude(pk=instance.pk).exists()
     if existed:
         raise DuplicateImageException("Duplicate")

@@ -149,6 +149,8 @@ class Product(AuditableModel):
     # with one have more Priority ( for this case we need middle class named ProductRecommendation )
     recommended_products = models.ManyToManyField('catalog.Product', through='ProductRecommendation', blank=True)
     
+    categories = models.ManyToManyField(Category, related_name='Categories')
+
     # image properties used for product ( easily access)
     @property
     def main_image(self):

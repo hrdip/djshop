@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'catalog',
     'djshop_media',
     'analytics',
+    'inventory',
 ]
 
 MIDDLEWARE = [

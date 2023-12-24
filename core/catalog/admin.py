@@ -67,9 +67,25 @@ class ProductClassAdmin(admin.ModelAdmin):
         queryset.update(track_stock=True)
 
 
+class ProductCategoryInline(admin.StackedInline):
+    # use middle table generated automatically becuase use ManyToMany Field
+    model = Product.categories.through
+    extra = 2
+
+
+class ProductAttributeValueInline(admin.TabularInline):
+    model = ProductAttributeValue
+    extra = 2
+
+
+class ProductImageInline(admin.TabularInline):
+    model = ProductImage
+    extra = 2
+
+
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('title', 'slug')
-    inlines = [ProductRecommendationInline]
+    inlines = [ProductAttributeValueInline, ProductImageInline, ProductRecommendationInline]
     prepopulated_fields = {'slug':('title',)}
 
 
