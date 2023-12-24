@@ -2,6 +2,7 @@ from typing import Any
 from django.db import models
 from treebeard.mp_tree import MP_Node
 from . libs.db.fields import UpercasesCharField
+from . libs.db.models import AuditableModel
 
 
 # Create your models here.
@@ -116,7 +117,8 @@ class OptionGroupValue(models.Model):
 
 # each product have some variant (1.stand alone 2.parent and child product)
 # variant with self join in child
-class Product(models.Model):
+# inheritance of our abstract model
+class Product(AuditableModel):
 
     # first we must know this product is stand alone or parent-child or child-parent
     class ProductTypeChoice(models.TextChoices):
