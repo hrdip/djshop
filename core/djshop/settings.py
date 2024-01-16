@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'djshop_media',
     'analytics',
     'inventory',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -102,6 +103,10 @@ DATABASES = {
         'PORT':'5432',
     }
 }
+
+# Authentication Properties
+# user manager configuration
+AUTH_USER_MODEL = "users.User"
 
 
 # Password validation
@@ -165,3 +170,4 @@ SPECTACULAR_SETTINGS = {
 
 # django storage backend properties ( if you want use Amazon S3 you should use this property)
 #STORAGE = {}
+
